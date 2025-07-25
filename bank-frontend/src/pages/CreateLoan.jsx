@@ -1,6 +1,7 @@
 // src/pages/CreateLoan.jsx
 import React, { useState } from 'react';
 import api from '../api/api';
+import { toast } from 'react-toastify';
 
 function CreateLoan() {
   const [form, setForm] = useState({
@@ -17,18 +18,17 @@ function CreateLoan() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setResult(null);
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      const res = await api.post('/loans', form);
-      setResult(res.data);
-    } catch (err) {
-      setError(err.response?.data?.error || 'Something went wrong');
-    }
-  };
+  try {
+    const res = await api.post('/loans', form);
+    setResult(res.data);
+    toast.success('✅ Loan created!');
+  } catch (err) {
+    toast.error(err.response?.data?.error || '❌ Failed to create loan');
+  }
+};
 
   return (
     <div style={{ maxWidth: 400, margin: 'auto', padding: 20 }}>

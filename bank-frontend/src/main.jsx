@@ -3,6 +3,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import App from './App';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 // Pages
 import CreateLoan from './pages/CreateLoan';
@@ -11,6 +14,7 @@ import Ledger from './pages/Ledger';
 import Overview from './pages/Overview';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
+  <>
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />} />
@@ -20,4 +24,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Route path="/overview/:customer_id" element={<Overview />} />
     </Routes>
   </BrowserRouter>
+    <ToastContainer position="top-center" />
+    </>
 );
