@@ -6,7 +6,8 @@ import TextPressure from './TextPressure';
 import ClickSpark from './ClickSpark.jsx';
 
 function App() {
-
+  const [loanId, setLoanId] = useState(''); // For dynamic ledger link
+  const [customerId, setCustomerId] = useState(''); // For dynamic overview link
 
   const handleAnimationComplete = () => {
     console.log('All letters have animated!');
@@ -15,15 +16,22 @@ function App() {
   const menuItems = [
     { path: "/loan", text: "Create Loan" },
     { path: "/payment", text: "Make Payment" },
-    { path: "/ledger/your-loan-id", text: "View Ledger" },
-    { path: "/overview/your-customer-id", text: "Account Overview" }
+    { 
+      path: loanId ? `/ledger/${loanId}` : "#", 
+      text: "View Ledger",
+      disabled: !loanId 
+    },
+    { 
+      path: customerId ? `/overview/${customerId}` : "#", 
+      text: "Account Overview",
+      disabled: !customerId 
+    }
   ];
 
   return (
     <>
-      {/* ClickSpark now works globally without affecting layout */}
       <ClickSpark
-        sparkColor="#c623e6" // Your purple color
+        sparkColor="#c623e6"
         sparkSize={3}
         sparkRadius={30}
         sparkCount={12}
@@ -35,7 +43,7 @@ function App() {
         position: 'relative',
         zIndex: 10,
         minHeight: '100vh',
-        backgroundColor: '#fff' // White background for contrast
+        backgroundColor: '#fff'
       }}>
         <SplitText
           text="🏦 Bank Lending System"
@@ -52,6 +60,47 @@ function App() {
           onLetterAnimationComplete={handleAnimationComplete}
         />
 
+        {/* Input fields for loan/customer IDs */}
+        <div style={{
+          maxWidth: '600px',
+          margin: '0 auto 30px',
+          padding: '20px',
+          backgroundColor: '#f5f5f5',
+          borderRadius: '10px'
+        }}>
+          <div style={{ marginBottom: '15px' }}>
+            <label style={{ display: 'block', marginBottom: '5px' }}>Loan ID for Ledger:</label>
+            <input
+              type="text"
+              value={loanId}
+              onChange={(e) => setLoanId(e.target.value)}
+              placeholder="Enter Loan ID"
+              style={{
+                width: '100%',
+                padding: '10px',
+                borderRadius: '5px',
+                border: '1px solid #ddd'
+              }}
+            />
+          </div>
+          <div>
+            <label style={{ display: 'block', marginBottom: '5px' }}>Customer ID for Overview:</label>
+            <input
+              type="text"
+              value={customerId}
+              onChange={(e) => setCustomerId(e.target.value)}
+              placeholder="Enter Customer ID"
+              style={{
+                width: '100%',
+                padding: '10px',
+                borderRadius: '5px',
+                border: '1px solid #ddd'
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Menu Items */}
         <ul style={{
           listStyle: 'none',
           padding: 0,
@@ -64,7 +113,9 @@ function App() {
                 to={item.path}
                 style={{
                   textDecoration: 'none',
-                  display: 'block'
+                  display: 'block',
+                  opacity: item.disabled ? 0.5 : 1,
+                  pointerEvents: item.disabled ? 'none' : 'auto'
                 }}
                 className="hover:scale-10 transition-transform"
               >
@@ -84,15 +135,28 @@ function App() {
                     height: '60px',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center'
+                    justifyContent: 'center',
+                    backgroundColor: item.disabled ? '#f0f0f0' : '#fff',
+                    borderRadius: '8px',
+                    boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
                   }}
                 />
               </Link>
+              {item.disabled && (
+                <p style={{ 
+                  color: '#ff4444', 
+                  fontSize: '12px', 
+                  textAlign: 'center',
+                  marginTop: '5px'
+                }}>
+                  {item.text === "View Ledger" 
+                    ? "Please enter a Loan ID above" 
+                    : "Please enter a Customer ID above"}
+                </p>
+              )}
             </li>
           ))}
         </ul>
-
-
       </div>
     </>
   );
