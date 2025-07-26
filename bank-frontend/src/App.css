@@ -4,7 +4,39 @@
   padding: 2rem;
   text-align: center;
 }
+.split-parent {
+  font-size: 4rem !important;
+  display: block !important;
+}
 
+
+.text-pressure-container {
+  font-size: 18px !important;
+}
+
+.text-pressure-title {
+  font-size: inherit !important;
+  line-height: 2 !important;
+}
+
+.click-spark-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 100;
+}
+.click-spark-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 100;
+}
 .logo {
   height: 6em;
   padding: 1.5em;
